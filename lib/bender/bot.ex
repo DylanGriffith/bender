@@ -10,7 +10,7 @@ defmodule Bender.Bot do
     {:ok, event_manager} = GenEvent.start_link
 
     Enum.each commands, fn(c) ->
-      GenEvent.add_handler(event_manager, c, [])
+      :ok = GenEvent.add_mon_handler(event_manager, c, self)
     end
 
     # Login
