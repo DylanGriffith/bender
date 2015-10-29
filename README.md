@@ -20,7 +20,7 @@ The implementation is very simple:
 defmodule Bender.Commands.Echo do
   use GenEvent
 
-  def handle_event({{:command, "echo", message}, {session = %Matrix.Session{}, room = %Matrix.Room{}, author = %Matrix.User{}}}, parent) do
+  def handle_event({{:command, "echo", message}, {session, room, author}}, parent) do
     Matrix.Client.post!(session, room, message)
     {:ok, parent}
   end
