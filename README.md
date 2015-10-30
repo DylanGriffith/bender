@@ -65,7 +65,7 @@ log you into matrix.org and you can play around with your bot.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+The package can be installed as:
 
   1. Add bender to your list of dependencies in `mix.exs`:
 
