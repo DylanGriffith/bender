@@ -1,8 +1,8 @@
 defmodule Bender.Commands.Echo do
   use Bender.Command
 
-  def handle_event({{:command, "echo", message}, {session = %Matrix.Session{}, room = %Matrix.Room{}, author = %Matrix.User{}}}, parent) do
-    Matrix.Client.post!(session, room, message)
+  def handle_event({{:command, "echo", message}, meta}, parent) do
+    respond(message, meta)
     {:ok, parent}
   end
 end

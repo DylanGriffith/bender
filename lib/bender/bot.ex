@@ -38,7 +38,7 @@ defmodule Bender.Bot do
 
     # Dispatch commands
     Enum.each command_events, fn ({command, event}) ->
-      GenEvent.notify(event_manager, {command, {session, event.room, event.user}})
+      GenEvent.notify(event_manager, {command, %{session: session, room: event.room, author: event.user}})
     end
 
     # Poll again for events

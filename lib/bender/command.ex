@@ -3,6 +3,10 @@ defmodule Bender.Command do
     quote do
       @before_compile unquote(__MODULE__)
       use GenEvent
+
+      def respond(message, %{session: session, room: room, author: author}) do
+        Matrix.Client.post!(session, room, message)
+      end
     end
   end
 
