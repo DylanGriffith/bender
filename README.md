@@ -18,29 +18,23 @@ The implementation is very simple:
 
 ```elixir
 defmodule Bender.Commands.Echo do
-  use GenEvent
+  use Bender.Command
 
-  def handle_event({{:command, "echo", message}, {session, room, author}}, parent) do
-    Matrix.Client.post!(session, room, message)
-    {:ok, parent}
-  end
-
-  # Need to ignore everything else since by default it will crash if no
-  # function clause matches
-  def handle_event(_, parent) do
+  def handle_event({{:command, "echo", message}, meta}, parent) do
+    respond(message, meta)
     {:ok, parent}
   end
 end
 ```
 
-As you can see this framework uses GenEvent for dispatching the commands. You
-can use all the deliciousness of pattern matching to match the commands you are
-interested in.
+This framework uses GenEvent for dispatching the commands. You can use all the
+deliciousness of pattern matching to match the commands you are interested in.
 
 The important part of the pattern match is `{:command, "echo", message}`. In
 the case that someone says `bender echo hello world` these will come through
 like `{:command, "echo", "hello world"}`. The other parts of the pattern match
-are just metadata/session data and you don't need to change.
+are just metadata/session data. You can use `meta[:author].user_id` if you want
+to know who sent the message.
 
 The commands that your bot actually runs must be configured and you can mix and
 match between packaged commands and any commands you define.
@@ -54,7 +48,7 @@ config :bender,
   matrix_home_server: "matrix.org",
   matrix_user: "bender",
   matrix_password: "bender",
-  commands: [Bender.Commands.Echo],
+  commands: [Bender.Commands.Echo, Bender.Commands.Ping],
   room_names: ["#bender:matrix.org"]
 ```
 
