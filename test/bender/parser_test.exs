@@ -21,6 +21,10 @@ defmodule Bender.ParserTest do
     assert Bender.Parser.try_parse("foobar echo hello world", "foobar") == {:command, "echo", "hello world"}
   end
 
+  test "#try_parse supports empty message after command" do
+    assert Bender.Parser.try_parse("bender ping") == {:command, "ping", ""}
+  end
+
   test "#try_parse returns nil for invalid command" do
     assert Bender.Parser.try_parse("foo bar hello world") == nil
   end
