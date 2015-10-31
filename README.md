@@ -20,6 +20,9 @@ The implementation is very simple:
 defmodule Bender.Commands.Echo do
   use Bender.Command
 
+  @usage "echo <message>"
+  @short_description "responds with <message>"
+
   def handle_event({{:command, "echo", message}, meta}, parent) do
     respond(message, meta)
     {:ok, parent}
@@ -35,6 +38,9 @@ the case that someone says `bender echo hello world` these will come through
 like `{:command, "echo", "hello world"}`. The other parts of the pattern match
 are just metadata/session data. You can use `meta[:author].user_id` if you want
 to know who sent the message.
+
+The module attributes `@usage` and `@short_description` will be included in the
+output of `bender help` if they are defined.
 
 The commands that your bot actually runs must be configured and you can mix and
 match between packaged commands and any commands you define.
