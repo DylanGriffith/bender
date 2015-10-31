@@ -15,7 +15,7 @@ config :bender,
   matrix_home_server: "matrix.org",
   matrix_user: "bender",
   matrix_password: "bender",
-  commands: [Bender.Commands.Echo],
+  commands: [Bender.Commands.Echo, Bender.Commands.Ping],
   room_names: ["#bender:matrix.org"]
 
 #
