@@ -4,8 +4,8 @@ defmodule Bender.Commands.Echo do
   @usage "echo <message>"
   @short_description "responds with <message>"
 
-  def handle_event({{:command, "echo", message}, meta}, parent) do
+  def handle_event({{:command, "echo", message}, meta}, state) do
     respond(message, meta)
-    {:ok, parent}
+    {:ok, state}
   end
 end
