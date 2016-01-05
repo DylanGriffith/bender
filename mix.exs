@@ -34,4 +34,12 @@ defmodule Bender.Mixfile do
       {:exrm, "~> 0.19"},
     ]
   end
+
+  defp package do
+    [# These are the default files included in the package
+     files: ["lib", "priv", "mix.exs", "README.md", "LICENSE.txt",],
+     maintainers: ["Dylan Griffith"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/DylanGriffith/bender"}]
+  end
 end
