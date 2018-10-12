@@ -9,12 +9,14 @@ defmodule Bender do
     password = Application.get_env(:bender, :matrix_password)
     room_names = Application.get_env(:bender, :room_names)
     commands = Application.get_env(:bender, :commands)
+    event_reactions = Application.get_env(:bender, :event_reactions)
 
     children = [
       worker(Bender.Bot, [
         %Matrix.Config{home_server: home_server, user: user, password: password},
         room_names,
-        commands
+        commands,
+        event_reactions
       ])
     ]
 

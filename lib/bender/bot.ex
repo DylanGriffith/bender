@@ -1,21 +1,26 @@
 defmodule Bender.Bot do
   use GenServer
 
-  def start_link(config = %Matrix.Config{}, room_names, commands) do
-    GenServer.start_link(__MODULE__, [config, room_names, commands], name: __MODULE__)
+  def start_link(config = %Matrix.Config{}, room_names, commands, event_reactions) do
+    GenServer.start_link(__MODULE__, [config, room_names, commands, event_reactions],
+      name: __MODULE__
+    )
   end
 
-  def init([config = %Matrix.Config{}, room_names, commands]) do
-    event_manager = setup_event_manager(commands)
+  def init([config = %Matrix.Config{}, room_names, commands, event_reactions]) do
+    event_manager = setup_event_manager(commands, event_reactions)
 
     # Login
-    session = Matrix.Client.login!(config)
+    session =
+      Matrix.Client.login!(config)
+      |> IO.inspect()
 
     # Join Rooms
     rooms =
       Enum.map(room_names, fn room_name ->
         Matrix.Client.join!(session, room_name)
       end)
+      |> IO.inspect()
 
     # Trigger first poll for events
     GenServer.cast(self(), :poll_matrix)
@@ -26,7 +31,8 @@ defmodule Bender.Bot do
        rooms: rooms,
        event_manager: event_manager,
        from: nil,
-       commands: commands
+       commands: commands,
+       event_reactions: event_reactions
      }}
   end
 
@@ -38,6 +44,16 @@ defmodule Bender.Bot do
     events = Matrix.Client.events!(session, from)
 
     state = Map.put(state, :from, events.endd)
+
+    # Dispatch events
+    events |> IO.inspect()
+
+    Enum.each(events.events, fn event ->
+      GenEvent.notify(
+        event_manager,
+        {:matrix_event, {session, event}}
+      )
+    end)
 
     # Extract commands
     command_events =
@@ -62,12 +78,15 @@ defmodule Bender.Bot do
     {:noreply, state}
   end
 
-  def handle_info({:gen_event_EXIT, _, _}, state = %{commands: commands}) do
-    state = Map.put(state, :event_manager, setup_event_manager(commands))
+  def handle_info(
+        {:gen_event_EXIT, _, _},
+        state = %{commands: commands, event_reactions: event_reactions}
+      ) do
+    state = Map.put(state, :event_manager, setup_event_manager(commands, event_reactions))
     {:noreply, state}
   end
 
-  def setup_event_manager(commands) do
+  def setup_event_manager(commands, event_reactions) do
     # Start the GenEvent manager
     {:ok, event_manager} = GenEvent.start_link()
 
@@ -75,6 +94,10 @@ defmodule Bender.Bot do
 
     Enum.each(commands, fn c ->
       :ok = GenEvent.add_mon_handler(event_manager, c, self())
+    end)
+
+    Enum.each(event_reactions, fn er ->
+      :ok = GenEvent.add_mon_handler(event_manager, er, self())
     end)
 
     event_manager

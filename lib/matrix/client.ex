@@ -13,6 +13,18 @@ defmodule Matrix.Client do
     Poison.decode!(response.body, as: %Matrix.Session{})
   end
 
+  def leave!(session, room_name) do
+    room_response =
+      HTTPoison.post!(
+        "https://#{session.home_server}/_matrix/client/api/v1/leave/#{room_name}?access_token=#{
+          session.access_token
+        }",
+        "",
+        [],
+        timeout: 10_000
+      )
+  end
+
   def join!(session, room_name) do
     room_response =
       HTTPoison.post!(
