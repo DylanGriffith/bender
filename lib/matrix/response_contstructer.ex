@@ -15,13 +15,13 @@ defmodule Matrix.ResponseConstructer do
       room: room(response["room_id"]),
       type: response["type"],
       origin_server_ts: response["origin_server_ts"],
-      user: user(response["user_id"]),
+      user: user(response["user_id"])
     }
   end
 
   def content("m.typing", response) do
     %Matrix.Content{
-      users: Enum.map(response["user_ids"] , &user/1)
+      users: Enum.map(response["user_ids"], &user/1)
     }
   end
 
