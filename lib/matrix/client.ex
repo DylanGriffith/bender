@@ -68,9 +68,10 @@ defmodule Matrix.Client do
         room = %Matrix.Room{},
         message,
         msg_type \\ "m.text",
-        event_type \\ "m.room.message"
+        event_type \\ "m.room.message",
+        extra_fields \\ %{}
       ) do
-    data = %{msgtype: msg_type, body: message}
+    data = Map.merge(%{msgtype: msg_type, body: message}, extra_fields)
 
     response =
       HTTPoison.post!(
