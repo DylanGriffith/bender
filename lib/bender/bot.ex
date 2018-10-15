@@ -36,6 +36,8 @@ defmodule Bender.Bot do
      }}
   end
 
+  def handle_call(:get_state, _from, state), do: {:reply, state, state}
+
   def handle_cast(
         :poll_matrix,
         state = %{session: session = %Matrix.Session{}, event_manager: event_manager, from: from}
