@@ -36,6 +36,9 @@ defmodule Bender.Bot do
      }}
   end
 
+  def handle_call({:set_state, new_state}, _from, state),
+    do: {:reply, {state, new_state}, new_state}
+
   def handle_call(:get_state, _from, state), do: {:reply, state, state}
 
   def handle_cast(
