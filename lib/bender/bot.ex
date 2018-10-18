@@ -1,6 +1,8 @@
 defmodule Bender.Bot do
   use GenServer
 
+  require Logger
+
   def start_link(config = %Matrix.Config{}, room_names, commands, event_reactions) do
     GenServer.start_link(__MODULE__, [config, room_names, commands, event_reactions],
       name: __MODULE__
@@ -11,16 +13,17 @@ defmodule Bender.Bot do
     event_manager = setup_event_manager(commands, event_reactions)
 
     # Login
-    session =
-      Matrix.Client.login!(config)
-      |> IO.inspect()
+    session = Matrix.Client.login!(config)
+
+    Logger.debug(fn -> "Login Result (Session): #{inspect(session)}" end)
 
     # Join Rooms
     rooms =
       Enum.map(room_names, fn room_name ->
         Matrix.Client.join!(session, room_name)
       end)
-      |> IO.inspect()
+
+    Logger.debug(fn -> "Rooms: #{inspect(rooms)}" end)
 
     # Trigger first poll for events
     GenServer.cast(self(), :poll_matrix)
@@ -36,6 +39,8 @@ defmodule Bender.Bot do
      }}
   end
 
+  # this call primarily exists to allow an optional eval command to modify the
+  # bot during runtime
   def handle_call({:set_state, new_state}, _from, state),
     do: {:reply, {state, new_state}, new_state}
 
@@ -50,9 +55,9 @@ defmodule Bender.Bot do
 
     state = Map.put(state, :from, events.endd)
 
-    # Dispatch events
-    events |> IO.inspect()
+    Logger.debug(fn -> "Matrix Events: #{inspect(session)}" end)
 
+    # Dispatch events
     Enum.each(events.events, fn event ->
       GenEvent.notify(
         event_manager,
