@@ -55,7 +55,7 @@ defmodule Bender.Bot do
 
     state = Map.put(state, :from, events.endd)
 
-    Logger.debug(fn -> "Matrix Events: #{inspect(session)}" end)
+    Logger.debug(fn -> "Matrix Events: #{inspect(events)}" end)
 
     # Dispatch events
     Enum.each(events.events, fn event ->
