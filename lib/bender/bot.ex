@@ -15,7 +15,7 @@ defmodule Bender.Bot do
     # Login
     session = Matrix.Client.login!(config)
 
-    Logger.debug(fn -> "Login Result (Session): #{inspect(session)}" end)
+    Logger.debug(fn -> "Login Result (Session): #{inspect(session, pretty: true)}" end)
 
     # Join Rooms
     rooms =
@@ -23,7 +23,7 @@ defmodule Bender.Bot do
         Matrix.Client.join!(session, room_name)
       end)
 
-    Logger.debug(fn -> "Rooms: #{inspect(rooms)}" end)
+    Logger.debug(fn -> "Rooms: #{inspect(rooms, pretty: true)}" end)
 
     # Trigger first poll for events
     GenServer.cast(self(), :poll_matrix)
@@ -55,7 +55,7 @@ defmodule Bender.Bot do
 
     state = Map.put(state, :from, events.endd)
 
-    Logger.debug(fn -> "Matrix Events: #{inspect(events)}" end)
+    Logger.debug(fn -> "Matrix Events: #{inspect(events, pretty: true)}" end)
 
     # Dispatch events
     Enum.each(events.events, fn event ->

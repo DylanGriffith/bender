@@ -1,4 +1,4 @@
-defmodule Matrix.ResponseConstructerTest do
+defmodule Matrix.ResponseConstructorTest do
   use ExUnit.Case, async: true
 
   test "#events: transforms typing events in Matrix.Events" do
@@ -20,13 +20,13 @@ defmodule Matrix.ResponseConstructerTest do
           content: %Matrix.Content{users: [%Matrix.User{user_id: "@bob:matrix.org"}]},
           room: %Matrix.Room{room_id: "!abc123:matrix.org"},
           type: "m.typing"
-        },
+        }
       ],
       endd: "s12345",
       start: "s12344"
     }
 
-    assert Matrix.ResponseConstructer.events(input) == output
+    assert Matrix.ResponseConstructor.events(input) == output
   end
 
   test "transforms message events in Matrix.Events" do
@@ -36,7 +36,7 @@ defmodule Matrix.ResponseConstructerTest do
           "age" => 136,
           "content" => %{"body" => "bender echo hello", "msgtype" => "m.text"},
           "event_id" => "$1446024043133ABC:matrix.org",
-          "origin_server_ts" => 1446024043133,
+          "origin_server_ts" => 1_446_024_043_133,
           "room_id" => "!abc123:matrix.org",
           "type" => "m.room.message",
           "user_id" => "@bob:matrix.org"
@@ -55,16 +55,16 @@ defmodule Matrix.ResponseConstructerTest do
             body: "bender echo hello",
             msg_type: "m.text"
           },
-          origin_server_ts: 1446024043133,
+          origin_server_ts: 1_446_024_043_133,
           room: %Matrix.Room{room_id: "!abc123:matrix.org"},
           type: "m.room.message",
           user: %Matrix.User{user_id: "@bob:matrix.org"}
-        },
+        }
       ],
       endd: "s12345",
       start: "s12344"
     }
 
-    assert Matrix.ResponseConstructer.events(input) == output
+    assert Matrix.ResponseConstructor.events(input) == output
   end
 end

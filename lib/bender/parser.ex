@@ -9,7 +9,7 @@ defmodule Bender.Parser do
       )
 
     Logger.debug(fn ->
-      "Bender.Parser.try_parse() - Event ({msg, regex_match}): #{inspect({message, match})}"
+      "Bender.Parser.try_parse() - Event ({msg, regex_match}): #{inspect({message, match}, pretty: true)}"
     end)
 
     if match && match["command"] do

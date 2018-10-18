@@ -60,7 +60,7 @@ defmodule Matrix.Client do
 
     response.body
     |> Poison.decode!()
-    |> Matrix.ResponseConstructer.events()
+    |> Matrix.ResponseConstructor.events()
   end
 
   def post!(

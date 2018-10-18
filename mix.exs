@@ -4,7 +4,7 @@ defmodule Bender.Mixfile do
   def project do
     [
       app: :bender,
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.1",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
