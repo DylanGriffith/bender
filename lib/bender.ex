@@ -5,6 +5,7 @@ defmodule Bender do
     import Supervisor.Spec, warn: false
 
     home_server = Application.get_env(:bender, :matrix_home_server)
+    home_server_protocol = Application.get_env(:bender, :matrix_home_server_protocol, "https")
     user = Application.get_env(:bender, :matrix_user)
     password = Application.get_env(:bender, :matrix_password)
     room_names = Application.get_env(:bender, :room_names)
@@ -13,7 +14,12 @@ defmodule Bender do
 
     children = [
       worker(Bender.Bot, [
-        %Matrix.Config{home_server: home_server, user: user, password: password},
+        %Matrix.Config{
+          home_server: home_server,
+          user: user,
+          password: password,
+          home_server_protocol: home_server_protocol
+        },
         room_names,
         commands,
         event_reactions

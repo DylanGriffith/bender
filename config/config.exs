@@ -13,6 +13,7 @@ use Mix.Config
 config :bender,
   command_prefix: "bender",
   matrix_home_server: "matrix.org",
+  matrix_home_server_protocol: "https",
   matrix_user: "bender",
   matrix_password: "bender",
   commands: [Bender.Commands.Echo, Bender.Commands.Ping],

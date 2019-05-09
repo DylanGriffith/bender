@@ -1,10 +1,15 @@
 defmodule Matrix.Client do
-  def login!(%Matrix.Config{home_server: home_server, user: user, password: password}) do
+  def login!(%Matrix.Config{
+        home_server: home_server,
+        user: user,
+        password: password,
+        home_server_protocol: home_server_protocol
+      }) do
     data = %{user: user, password: password, type: "m.login.password"}
 
     response =
       HTTPoison.post!(
-        "https://#{home_server}/_matrix/client/api/v1/login",
+        "#{home_server_protocol}://#{home_server}/_matrix/client/api/v1/login",
         Poison.encode!(data),
         [],
         timeout: 10_000
@@ -16,9 +21,9 @@ defmodule Matrix.Client do
   def leave!(session, room_name) do
     room_response =
       HTTPoison.post!(
-        "https://#{session.home_server}/_matrix/client/api/v1/leave/#{room_name}?access_token=#{
-          session.access_token
-        }",
+        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/leave/#{
+          room_name
+        }?access_token=#{session.access_token}",
         "",
         [],
         timeout: 10_000
@@ -28,9 +33,9 @@ defmodule Matrix.Client do
   def join!(session, room_name) do
     room_response =
       HTTPoison.post!(
-        "https://#{session.home_server}/_matrix/client/api/v1/join/#{room_name}?access_token=#{
-          session.access_token
-        }",
+        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/join/#{
+          room_name
+        }?access_token=#{session.access_token}",
         "",
         [],
         timeout: 10_000
@@ -51,7 +56,7 @@ defmodule Matrix.Client do
 
     response =
       HTTPoison.get!(
-        "https://#{session.home_server}/_matrix/client/api/v1/events",
+        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/events",
         [Accept: "application/json"],
         params: params,
         recv_timeout: 40000,
@@ -75,9 +80,9 @@ defmodule Matrix.Client do
 
     response =
       HTTPoison.post!(
-        "https://#{session.home_server}/_matrix/client/api/v1/rooms/#{room.room_id}/send/#{
-          event_type
-        }?access_token=#{session.access_token}",
+        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/rooms/#{
+          room.room_id
+        }/send/#{event_type}?access_token=#{session.access_token}",
         Poison.encode!(data)
       )
 
