@@ -19,7 +19,7 @@ defmodule Bender do
           home_server: home_server,
           user: user,
           password: password,
-          home_server_protocol: home_server_protocol
+          home_server_protocol: home_server_protocol,
           home_server_port: home_server_port
         },
         room_names,

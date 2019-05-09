@@ -17,7 +17,13 @@ defmodule Matrix.ResponseConstructorTest do
     output = %Matrix.Events{
       events: [
         %Matrix.Event{
-          content: %Matrix.Content{users: [%Matrix.User{user_id: "@bob:matrix.org"}]},
+          content: %Matrix.Content{
+            users: [
+              %Matrix.User{user_id: "@bob:matrix.org"}
+            ],
+            original_response: input |> Map.get("chunk") |> Enum.at(0) |> Map.get("content")
+          },
+          original_response: input["chunk"] |> Enum.at(0),
           room: %Matrix.Room{room_id: "!abc123:matrix.org"},
           type: "m.typing"
         }
@@ -51,8 +57,10 @@ defmodule Matrix.ResponseConstructorTest do
         %Matrix.Event{
           event_id: "$1446024043133ABC:matrix.org",
           age: 136,
+          original_response: input |> Map.get("chunk") |> Enum.at(0),
           content: %Matrix.Content{
             body: "bender echo hello",
+            original_response: input |> Map.get("chunk") |> Enum.at(0) |> Map.get("content"),
             msg_type: "m.text"
           },
           origin_server_ts: 1_446_024_043_133,

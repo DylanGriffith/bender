@@ -18,7 +18,7 @@ config :bender,
   matrix_user: "bender",
   matrix_password: "bender",
   commands: [Bender.Commands.Echo, Bender.Commands.Ping],
-  event_reactions: [Bender.EventReactions.AutoJoinRoomInvites],
+  event_reactions: [],
   room_names: ["#bender:matrix.org"]
 
 #

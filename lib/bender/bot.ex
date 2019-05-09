@@ -4,16 +4,19 @@ defmodule Bender.Bot do
   require Logger
 
   def start_link(config = %Matrix.Config{}, room_names, commands, event_reactions) do
+    config |> IO.inspect()
+
     GenServer.start_link(__MODULE__, [config, room_names, commands, event_reactions],
       name: __MODULE__
     )
+    |> IO.inspect()
   end
 
   def init([config = %Matrix.Config{}, room_names, commands, event_reactions]) do
     event_manager = setup_event_manager(commands, event_reactions)
 
     # Login
-    session = Matrix.Client.login!(config)
+    session = Matrix.Client.login!(config) |> IO.inspect()
 
     Logger.debug(fn -> "Login Result (Session): #{inspect(session, pretty: true)}" end)
 
