@@ -29,7 +29,9 @@ defmodule Matrix.Client do
         timeout: 10_000
       )
 
-    Poison.decode!(response.body, as: %Matrix.Session{}) |> IO.inspect()
+        Poison.decode!(response.body, as: %Matrix.Session{})
+        |> IO.inspect()
+        |> Map.put(:home_server, "#{home_server_protocol}://#{home_server}:#{home_server_port}"
   end
 
   def leave!(session, room_name) do
