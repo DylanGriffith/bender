@@ -7,7 +7,7 @@ defmodule Matrix.Client do
   end
 
   defp base_url(%Matrix.Session{} = session) do
-    "https://#{session.home_server}/_matrix"
+    "#{session.home_server}/_matrix"
   end
 
   def login!(
@@ -29,9 +29,9 @@ defmodule Matrix.Client do
         timeout: 10_000
       )
 
-        Poison.decode!(response.body, as: %Matrix.Session{})
-        |> IO.inspect()
-        |> Map.put(:home_server, "#{home_server_protocol}://#{home_server}:#{home_server_port}"
+    Poison.decode!(response.body, as: %Matrix.Session{})
+    |> IO.inspect()
+    |> Map.put(:home_server, "#{home_server_protocol}://#{home_server}:#{home_server_port}")
   end
 
   def leave!(session, room_name) do
