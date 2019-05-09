@@ -6,6 +6,7 @@ defmodule Bender do
 
     home_server = Application.get_env(:bender, :matrix_home_server)
     home_server_protocol = Application.get_env(:bender, :matrix_home_server_protocol, "https")
+    home_server_port = Application.get_env(:bender, :matrix_home_server_port, "443")
     user = Application.get_env(:bender, :matrix_user)
     password = Application.get_env(:bender, :matrix_password)
     room_names = Application.get_env(:bender, :room_names)
@@ -19,6 +20,7 @@ defmodule Bender do
           user: user,
           password: password,
           home_server_protocol: home_server_protocol
+          home_server_port: home_server_port
         },
         room_names,
         commands,

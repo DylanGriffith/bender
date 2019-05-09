@@ -1,15 +1,20 @@
 defmodule Matrix.Client do
+  defp base_url(%Matrix.Config{} = config) do
+    "#{config.home_server_protocol}://#{config.home_server}:#{config.port}/_matrix"
+  end
+
   def login!(%Matrix.Config{
         home_server: home_server,
         user: user,
         password: password,
         home_server_protocol: home_server_protocol
-      }) do
+        home_server_port: home_server_port
+      } = config) do
     data = %{user: user, password: password, type: "m.login.password"}
 
     response =
       HTTPoison.post!(
-        "#{home_server_protocol}://#{home_server}/_matrix/client/api/v1/login",
+        "#{base_url(config)}/client/api/v1/login",
         Poison.encode!(data),
         [],
         timeout: 10_000
@@ -21,7 +26,7 @@ defmodule Matrix.Client do
   def leave!(session, room_name) do
     room_response =
       HTTPoison.post!(
-        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/leave/#{
+        "#{base_url(config)}/client/api/v1/leave/#{
           room_name
         }?access_token=#{session.access_token}",
         "",
@@ -33,7 +38,7 @@ defmodule Matrix.Client do
   def join!(session, room_name) do
     room_response =
       HTTPoison.post!(
-        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/join/#{
+        "#{base_url(config)}/client/api/v1/join/#{
           room_name
         }?access_token=#{session.access_token}",
         "",
@@ -56,7 +61,7 @@ defmodule Matrix.Client do
 
     response =
       HTTPoison.get!(
-        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/events",
+        "#{base_url(config)}/client/api/v1/events",
         [Accept: "application/json"],
         params: params,
         recv_timeout: 40000,
@@ -80,7 +85,7 @@ defmodule Matrix.Client do
 
     response =
       HTTPoison.post!(
-        "#{session.home_server_protocol}://#{session.home_server}/_matrix/client/api/v1/rooms/#{
+        "#{base_url(config)}/client/api/v1/rooms/#{
           room.room_id
         }/send/#{event_type}?access_token=#{session.access_token}",
         Poison.encode!(data)
