@@ -1,3 +1,7 @@
+# Deprecated
+
+As I no longer use Matrix personally I'm not maintaining this tool anymore.
+
 # Bender
 
 This project attempts to create a simple/flexible bot framework using the best
