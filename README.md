@@ -67,14 +67,14 @@ log you into matrix.org and you can play around with your bot.
 
 The package can be installed as:
 
-  1. Add bender to your list of dependencies in `mix.exs`:
+1. Add bender to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:bender, git: "https://github.com/DylanGriffith/bender.git"}]
-        end
+		def deps do
+			[{:bender, git: "https://github.com/DylanGriffith/bender.git"}]
+		end
 
-  2. Ensure bender is started before your application:
+2. Ensure bender is started before your application:
 
-        def application do
-          [applications: [:bender]]
-        end
+		def application do
+			[applications: [:bender]]
+		end
