@@ -1,6 +1,6 @@
 # Deprecated
 
-As I no longer use Matrix personally I'm not maintaining this tool anymore.
+As I no longer use Matrix personally I'm not maintaining this tool anymore. I am aware of at least one fork that is maintained a bit more recently than this but I cannot endorse it as I do not use it https://github.com/lytedev/bender
 
 # Bender
 
