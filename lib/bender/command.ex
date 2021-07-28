@@ -12,13 +12,15 @@ defmodule Bender.Command do
 
   defmacro __before_compile__(_env) do
     quote do
-
-      if Module.get_attribute(__MODULE__, :usage) && Module.get_attribute(__MODULE__, :short_description) do
+      if Module.get_attribute(__MODULE__, :usage) &&
+           Module.get_attribute(__MODULE__, :short_description) do
         def handle_event({{:command, "help", ""}, meta}, parent) do
           message = get_help_message(@usage, @short_description)
+
           if message do
             respond(message, meta)
           end
+
           {:ok, parent}
         end
       end

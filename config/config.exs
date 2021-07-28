@@ -13,9 +13,12 @@ use Mix.Config
 config :bender,
   command_prefix: "bender",
   matrix_home_server: "matrix.org",
+  matrix_home_server_protocol: "https",
+  matrix_home_server_port: "443",
   matrix_user: "bender",
   matrix_password: "bender",
   commands: [Bender.Commands.Echo, Bender.Commands.Ping],
+  event_reactions: [],
   room_names: ["#bender:matrix.org"]
 
 #
